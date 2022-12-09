@@ -1,0 +1,92 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Balloon Order page - Welcome and choose a Balloon</title>
+    <style>
+        body {
+            margin: auto;
+        }
+
+        main, header {
+            margin-left: 400px;
+            width: 800px;
+        }
+
+        .newButton {
+            width: 300px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Balloon Shop App</h1>
+</header>
+<main>
+    <a class="btn btn-primary" href="/SelectBalloon">Order Balloon</a>
+    <p></p>
+    <p></p>
+    <h3> Balloon List </h3>
+    <div class="container mb-5">
+        <div class="row">
+            <div class="mb-12" th:if="${balloons.size() > 0}">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scopo="col">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Manufacturer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="balloon : ${balloons}">
+                            <td th:text="${balloon.getId()}"></td>
+                            <td th:text="${balloon.getName()}"></td>
+                            <td th:text="${balloon.getDescription()}"></td>
+                            <td th:text="${balloon.getManufacturer() != null} ?
+                                            ${balloon.getManufacturer().getName()} : 'No manufacturer'"></td>
+                            <td class="text-right">
+                                <form th:method="delete"
+                                      th:action="@{'/balloon/delete/{id}' (id=${balloon.getId()})}">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                                <a class="btn btn-dark"
+                                   th:href="@{'/balloon/edit-form/{id}' (id=${balloon.getId()})}"> Edit </a>
+
+                                <form th:method="POST" th:action="@{'/balloon/order/{id}' (id=${balloon.getId()})}">
+                                    <input type="datetime-local" id="date" th:name="dateOrder"/>
+                                    <button type="submit" class="btn btn-primary" > Order Balloon </button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-3">
+        <div class="row newButton">
+            <div class="col-sm-12 col-md-12">
+                <a href="/balloon/add-form" class="btn btn-block btn-dark add-product-btn">
+                    Add new balloon
+                </a>
+            </div>
+        </div>
+    </div>
+    </form>
+</main>
+</body>
+</html>
